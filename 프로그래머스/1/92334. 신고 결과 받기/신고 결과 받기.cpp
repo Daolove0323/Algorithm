@@ -2,6 +2,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <sstream>
 using namespace std;
 
 vector<int> solution(vector<string> id_list, vector<string> report, int k) {
@@ -12,9 +13,10 @@ vector<int> solution(vector<string> id_list, vector<string> report, int k) {
     sort(report.begin(), report.end());
     report.erase(unique(report.begin(), report.end()), report.end());
     for(string s : report) {
-        int len = 0;
-        while(s[len] != ' ') ++len;
-        list[id[s.substr(len + 1)]].push_back(id[s.substr(0, len)]);
+        string s1, s2;
+        istringstream iss(s);
+        iss >> s1 >> s2;
+        list[id[s2]].push_back(id[s1]);
     }
     for(string s : id_list)
         if(list[id[s]].size() >= k)
