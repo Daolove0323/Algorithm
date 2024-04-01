@@ -11,7 +11,7 @@ vector<int> solution(int n, vector<string> words) {
         if(words[i - 1].back() == words[i].front() && um[words[i]] == false)
             um[words[i]] = true;
         else
-            return {(i+1)%n==0?n:(i+1)%n, (i+1)%n==0?(i+1)/n:(i+1)/n+1};
+            return {i % n + 1, i / n + 1};
     }
     return {0, 0};
 }
