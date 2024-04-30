@@ -1,33 +1,25 @@
 #include <iostream>
 #include <string>
-#include <vector>
 using namespace std;
 
-int T, n;
-string str;
+int T;
+string s;
 
-int main(void){
-	cin >> T;
+bool isValid(string s) {
+    int left = 0, right = 0;
+    for(char c : s) {
+        if(c == '(') ++left;
+        else ++right;
+        if(left < right) return false;
+    }
+    return left == right;
+}
 
-	while(T--){
-	cin >> str;
-
-	for(int i = 0; i < str.size(); i++)
-		if(str[i] == '(')
-			n++;
-		else{
-			n--;
-			if(n < 0)
-				break;
-		}
-
-
-	if(n == 0)
-		cout << "YES" << '\n';
-	else
-		cout << "NO" << '\n';
-
-	str.clear();
-	n = 0;
-	}
+int main() {
+    cin >> T;
+    while(T--) {
+        cin >> s;
+        if(isValid(s)) cout << "YES" << '\n';
+        else cout << "NO" << '\n';
+    }
 }
