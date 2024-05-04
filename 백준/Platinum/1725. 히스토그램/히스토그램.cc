@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-int T, N, buf, maxVal;  // T : 테스트 케이스의 수, N :
+int T, N, buf, maxVal;
 
 int main() {
         cin >> N;
