@@ -1,34 +1,32 @@
 #include <iostream>
 using namespace std;
 
-const int white = 0;
-const int blue = 1;
+#define WHITE 0
+#define BLUE 1
 
-int N, whiteCnt, blueCnt;
-int paper[128][128];
+int n, white, blue;
+int arr[128][128];
 
-void recursive(int x, int y, int len) {
-    int color = paper[x][y];
-    
-    for(int i = x; i < x + len; i++)
-        for(int j = y; j < y + len; j++)
-            if(paper[i][j] != color) {
-                recursive(x, y, len / 2);
-                recursive(x + len / 2, y, len / 2);
-                recursive(x, y + len / 2, len / 2);
-                recursive(x + len / 2, y + len / 2, len / 2);
+void check(int y, int x, int l) {
+    int color = arr[y][x];
+    for (int i = 0; i < l; ++i)
+        for (int j = 0; j < l; ++j)
+            if (arr[y + i][x + j] != color) {
+                check(y, x, l/2);
+                check(y+l/2, x, l/2);
+                check(y, x+l/2, l/2);
+                check(y+l/2, x+l/2, l/2);
                 return;
             }
-
-    if(color == white) whiteCnt++;
-    else blueCnt++;
+    if(color == WHITE) ++white;
+    else ++blue;
 }
 
-int main(void) {
-    cin >> N;
-    for(int i = 0; i < N; i++)
-        for(int j = 0; j < N; j++)
-            cin >> paper[i][j];
-    recursive(0, 0, N);
-    cout << whiteCnt << '\n' << blueCnt;
+int main() {
+    cin >> n;
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            cin >> arr[i][j];
+    check(0, 0, n);
+    cout << white << " " << blue;
 }
