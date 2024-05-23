@@ -1,61 +1,57 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <utility>
+#include <string>
 #include <algorithm>
 using namespace std;
 
-int dx[4] = {-1, 1, 0, 0};
-int dy[4] = {0, 0, -1, 1};
+int dy[] = {-1, 1, 0, 0}, dx[] = {0, 0, -1, 1};
+int n, g_cnt;
+string s;
+int map[25][25];
+bool check[25][25];
+vector<int> answer;
 
-int N, cnt;
-int arr[25][25];
-vector<int> v;
-
-void bfs(int i, int j)
-{
-	queue<pair<int, int>> q;
-	pair<int, int> p = make_pair(i, j);
-	q.push(p);
-	arr[i][j] = 0;
-	cnt = 1;	
-	while(!q.empty())
-	{
-		p = q.front();
-		q.pop();
-		for(int i = 0; i < 4; i++)
-		{
-			if(arr[p.first + dx[i]][p.second + dy[i]] == 0 || p.first + dx[i] < 0 || N <= p.first + dx[i] || p.second + dy[i] < 0 || N <= p.second + dy[i])	continue;
-			arr[p.first + dx[i]][p.second + dy[i]] = 0;
-			cnt++;
-			q.push(make_pair(p.first + dx[i], p.second + dy[i]));
-		}
-	}
-	v.push_back(cnt);
+void bfs(int r, int c) {
+    int cnt = 1;
+    queue<pair<int ,int>> q;
+    q.push({r, c});
+    check[r][c] = true;
+    
+    while(!q.empty()) {
+        int y = q.front().first;
+        int x = q.front().second;
+        q.pop();
+        for (int i = 0; i < 4; ++i) {
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            if (n <= ny || ny < 0 || n <= nx || nx < 0 || map[ny][nx] == 0 || check[ny][nx]) continue;
+            q.push({ny, nx});
+            check[ny][nx] = true;
+            ++cnt;
+        }
+    }
+    answer.push_back(cnt);
 }
 
-int main(void)
-{
-	// 입력
-	cin >> N;
-	for(int i = 0; i < N; i++)
-		for(int j = 0; j < N; j++)
-			scanf("%1d", &arr[i][j]);
-		
-	// bfs
-	for(int i = 0;  i< N; i++)
-	{
-		for(int j = 0; j < N; j++)
-		{
-			if(arr[i][j] == 1)
-				bfs(i, j);
-		}
-	}
-
-	// 출력
-	sort(v.begin(), v.end());
-	cout << v.size() << endl;
-	for(int i = 0; i < v.size(); i++)
-		cout << v[i] << endl;
-
+int main() {
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+        cin >> s;
+        for (int j = 0; j < n; ++j) {
+            map[i][j] = s[j] - '0';
+        }
+    }
+        
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            if (map[i][j] && !check[i][j]) {
+                bfs(i, j);
+                ++g_cnt;
+            }
+            
+    sort(answer.begin(), answer.end());
+    cout << g_cnt << '\n';
+    for (auto i : answer)
+        cout << i << '\n';
 }
