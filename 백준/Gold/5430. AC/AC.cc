@@ -1,54 +1,53 @@
 #include <iostream>
-#include <deque>
-#include <string>
+#include <vector>
 #include <sstream>
 using namespace std;
 
-int T, n, cnt, input;
-string s, buf, order;
-bool reverse = false;
-
-
-int main(void) {
+int main() {
+    int T;
     cin >> T;
     while(T--) {
-        cin >> order >> n >> s;
-        s = s.substr(1, s.size() - 2);
-        istringstream iss(s); deque<int> dq; reverse = false; cnt = 0;
-        while(getline(iss, buf, ',')) {
-            stringstream ssInt(buf);
-	        ssInt >> input;
-            dq.push_back(input);
-        }
-
-        for(auto o : order) {
-            if(o == 'R') {
-                reverse = !reverse;
-            }
-            else if(o == 'D') {
-                if(++cnt > n) break;
-                if(reverse) dq.pop_back();
-                else dq.pop_front();
-            }
+        string insts, data, buf;
+        int n, start, end;
+        vector<int> nums;
+        bool forward = true;
+        
+        cin >> insts;   // 입력
+        cin >> n;
+        cin >> data;
+        
+        for (auto& c : data)    // 파싱하여 벡터에 숫자 삽입
+            if (!isdigit(c)) c = ' ';
+        istringstream iss(data);
+        while (iss >> buf)
+            nums.push_back(stoi(buf));
+        
+        start = 0; end = n - 1; // 명령어 처리
+        for (auto c : insts) {
+            if (c == 'D') {
+                if (forward) ++start;
+                else --end;
+                --n;
+            } else if( c == 'R')
+                forward = !forward;
         }
         
-        if(cnt > n) {
-            cout << "error" << endl;
-            continue;
-        }
-        
-        cout << '[';
-        if(reverse) {
-            for(int i = dq.size() - 1; i >= 0; i--)
-                if(i != 0) cout << dq[i] << ',';
-                else cout << dq[i];
-        }
-        else {
-            for(int i = 0; i < dq.size(); i++)
-                if(i != dq.size() - 1) cout << dq[i] << ',';
-                else cout << dq[i];
-        
+        if (n < 0) { // 출력
+            cout << "error" << '\n';
+        } else if (n == 0) {
+            cout << "[]" << '\n';
+        } else {
+            if (forward) {
+                cout << '[';
+                for (int i = start; i < end; ++i)
+                    cout << nums[i] << ",";
+                cout << nums[end] << "]\n";
+            } else {
+                cout << '[';
+                for (int i = end; i > start; --i)
+                    cout << nums[i] << ",";
+                cout << nums[start] << "]\n";
             }
-        cout << ']' << endl;
+        }
     }
 }
