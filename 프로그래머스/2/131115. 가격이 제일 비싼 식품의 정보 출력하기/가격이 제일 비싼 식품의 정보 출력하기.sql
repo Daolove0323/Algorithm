@@ -1,3 +1,3 @@
-SELECT PRODUCT_ID, PRODUCT_NAME, PRODUCT_CD, CATEGORY, PRICE
-FROM FOOD_PRODUCT
-WHERE PRICE IN (SELECT MAX(PRICE) FROM FOOD_PRODUCT)
+select product_id, product_name, product_cd, category, price
+from food_product
+where price in (select max(price) from food_product);
