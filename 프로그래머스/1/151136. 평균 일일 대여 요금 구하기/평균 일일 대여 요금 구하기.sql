@@ -1,3 +1,3 @@
-SELECT ROUND(AVG(DAILY_FEE), 0) AS AVERAGE_FEE
-FROM CAR_RENTAL_COMPANY_CAR  
-WHERE CAR_TYPE LIKE 'SUV';
+select round(avg(daily_fee), 0) average_fee
+from car_rental_company_car
+where car_type like 'SUV';
