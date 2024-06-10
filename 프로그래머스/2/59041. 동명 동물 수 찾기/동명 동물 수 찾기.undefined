@@ -1,5 +1,6 @@
-SELECT NAME, COUNT(NAME) AS COUNT
-FROM ANIMAL_INS
-GROUP BY NAME
-HAVING COUNT(NAME) >= 2
-ORDER BY NAME;
+select distinct a.name, count
+from animal_ins a join (select name, count(*) count
+                        from animal_ins
+                        group by name) b on a.name=b.name
+where count >= 2
+order by name;
