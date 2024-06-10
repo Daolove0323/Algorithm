@@ -1,3 +1,3 @@
-SELECT COUNT(*)
-FROM USER_INFO
-WHERE (AGE BETWEEN 20 AND 29) AND (JOINED BETWEEN '2021-01-01' AND '2021-12-31');
+select count(*) users
+from user_info
+where year(joined) = 2021 and age >= 20 and age <= 29;
