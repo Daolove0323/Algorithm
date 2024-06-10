@@ -1,5 +1,5 @@
-SELECT DATE_FORMAT(DATETIME, '%H') as HOUR, COUNT(*)
-FROM ANIMAL_OUTS
-WHERE DATE_FORMAT(DATETIME, '%H') >= 9 AND DATE_FORMAT(DATETIME, '%H') <= 19
-GROUP BY DATE_FORMAT(DATETIME, '%H')
-ORDER BY DATE_FORMAT(DATETIME, '%H')
+select hour(datetime) hour, count(*)
+from animal_outs
+where hour(datetime) >= 9 and hour(datetime) < 20
+group by hour(datetime)
+order by hour;
