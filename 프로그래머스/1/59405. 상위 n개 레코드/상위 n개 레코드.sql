@@ -1,4 +1,4 @@
-SELECT NAME
-FROM ANIMAL_INS a1
-WHERE DATETIME = (SELECT MIN(DATETIME)
-                 FROM ANIMAL_INS a2);
+select name
+from animal_ins
+where datetime in (select min(datetime)
+                  from animal_ins);
