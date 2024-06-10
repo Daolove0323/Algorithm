@@ -1,5 +1,5 @@
-SELECT YEAR(YM) YEAR, ROUND(AVG(PM_VAL1), 2) PM10, ROUND(AVG(PM_VAL2), 2) 'PM2.5'
-FROM AIR_POLLUTION
-WHERE LOCATION2 LIKE '수원'
-GROUP BY YEAR
-ORDER BY YEAR
+select year(ym) year, round(avg(pm_val1), 2) 'pm10', round(avg(pm_val2), 2) 'pm2.5'
+from air_pollution
+where location2 = '수원'
+group by year(ym)
+order by year
