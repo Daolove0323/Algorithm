@@ -1,1 +1,2 @@
-SELECT COUNT(*) FROM ANIMAL_INS
+select count(*) count
+from animal_ins
