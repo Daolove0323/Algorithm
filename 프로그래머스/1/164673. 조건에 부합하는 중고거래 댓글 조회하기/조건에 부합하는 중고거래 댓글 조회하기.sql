@@ -1,4 +1,4 @@
-SELECT A.TITLE, A.BOARD_ID, B.REPLY_ID, B.WRITER_ID, B.CONTENTS, DATE_FORMAT(B.CREATED_DATE, '%Y-%m-%d')
-FROM USED_GOODS_BOARD A JOIN USED_GOODS_REPLY B ON A.BOARD_ID=B.BOARD_ID
-WHERE A.CREATED_DATE LIKE '2022-10%'
-ORDER BY B.CREATED_DATE ASC, A.TITLE ASC;
+select title, a.board_id, reply_id, b.writer_id, b.contents, date_format(b.created_date, '%Y-%m-%d')
+from used_goods_board a join used_goods_reply b on a.board_id = b.board_id
+where year(a.created_date) = 2022 and month(a.created_date) = 10
+order by b.created_date asc, title asc;
