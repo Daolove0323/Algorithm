@@ -1,5 +1,9 @@
-SELECT USER_ID, PRODUCT_ID
-FROM ONLINE_SALE
-GROUP BY USER_ID, PRODUCT_ID
-HAVING COUNT(*) > 1
-ORDER BY USER_ID ASC, PRODUCT_ID DESC;
+select distinct user_id, product_id
+from online_sale a
+where (product_id) in (select product_id
+                     from online_sale b
+                     where a.user_id=b.user_id
+                     group by product_id
+                     having count(*) >= 2
+                      )
+order by user_id, product_id desc
