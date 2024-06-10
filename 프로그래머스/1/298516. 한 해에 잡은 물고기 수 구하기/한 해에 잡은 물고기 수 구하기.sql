@@ -1,3 +1,3 @@
-SELECT COUNT(ID) AS FISH_COUNT
-FROM FISH_INFO
-WHERE DATE_FORMAT(TIME, '%Y') LIKE '2021';
+select count(*) fish_count
+from fish_info
+where year(time) = 2021;
