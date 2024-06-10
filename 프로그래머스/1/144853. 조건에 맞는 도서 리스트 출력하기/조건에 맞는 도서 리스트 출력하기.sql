@@ -1,4 +1,4 @@
-SELECT BOOK_ID, DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE
-FROM BOOK
-WHERE CATEGORY LIKE '인문' AND DATE_FORMAT(PUBLISHED_DATE, '%Y') LIKE '2021'
-ORDER BY PUBLISHED_DATE ASC;
+select book_id, date_format(published_date, '%Y-%m-%d') as published_date
+from book
+where year(published_date) = '2021'and category in ('인문')
+order by published_date;
