@@ -1,4 +1,3 @@
-SELECT SUBSTR(PRODUCT_CODE, 1, 2) AS CATEGORY, COUNT(*) AS PRODUCTS
-FROM PRODUCT
-GROUP BY CATEGORY
-ORDER BY CATEGORY
+select substring(product_code, 1, 2) category, count(*) products
+from product
+group by category
