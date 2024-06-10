@@ -1,4 +1,4 @@
-SELECT FLOOR(PRICE / 10000) * 10000 PRICE_GROUP, COUNT(*) PRODUCTS
-FROM PRODUCT
-GROUP BY PRICE_GROUP
-ORDER BY PRICE_GROUP ASC
+select truncate(price, -4) price_group, count(*) products
+from product
+group by truncate(price, -4)
+order by price_group;
