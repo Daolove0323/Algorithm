@@ -1,6 +1,6 @@
-SELECT id, email, first_name, last_name
-FROM developers
-WHERE skill_code & (SELECT sum(code)
-                   FROM skillcodes
-                   WHERE name in ('C#', 'Python'))
-ORDER BY id
+select id, email, first_name, last_name
+from developers
+where skill_code & (select sum(code)
+              from skillcodes
+              where name in ('python', 'c#'))
+order by id;
