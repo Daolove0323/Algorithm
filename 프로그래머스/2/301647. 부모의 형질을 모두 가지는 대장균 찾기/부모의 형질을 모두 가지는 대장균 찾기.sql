@@ -1,6 +1,6 @@
-SELECT a.id, a.genotype, b.genotype parent_genotype
-FROM ecoli_data a LEFT JOIN (SELECT id, genotype
-                           FROM ecoli_data) b
-                           ON a.parent_id=b.id
-WHERE a.genotype&b.genotype=b.genotype
-ORDER BY id;
+select a.id, a.genotype, b.genotype parent_genotype
+from ecoli_data a join (
+    select id, genotype from ecoli_data
+    ) b on a.parent_id = b.id
+where a.genotype & b.genotype = b.genotype
+order by a.id;
