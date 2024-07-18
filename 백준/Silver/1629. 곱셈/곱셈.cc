@@ -1,22 +1,15 @@
 #include <iostream>
 using namespace std;
 
-long long a, b, c;
+long long a, b, c, answer = 1;
 
-long long solution(long i1, long i2) {
-    if(i2 == 1) return i1 % c;
-    
-    if(i2 % 2 == 0) {
-        long long tmp = solution(i1, i2 / 2) % c;
-        return (tmp * tmp) % c;
-    }
-    else {
-        long long tmp = solution(i1, (i2 - 1) / 2) % c;
-        return ((tmp * tmp % c) * i1) % c;
-    }
-} 
-
-int main(void) {
+int main() {
     cin >> a >> b >> c;
-    cout << solution(a, b) % c;
+    while(b > 0) {
+        if (b % 2 == 1)
+            answer = (answer * a) % c;
+        b /= 2;
+        a = (a * a) % c;
+    }
+    cout << answer;
 }
