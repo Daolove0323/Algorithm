@@ -1,58 +1,50 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#define MAX	200001
+#include <map>
 #define INF 987654321
 using namespace std;
 
-struct edge{
-	int vertex;
-	int distance;
-	edge(int v, int d) : vertex(v), distance(d) {}
-	bool operator<(const edge& e) const {return distance > e.distance;}
+struct cmp {
+    bool operator()(pair<int, int> a, pair<int, int> b) {
+        return a.second > b.second;
+    }
 };
 
-int V, E, K;
-vector<pair<int, int>> adj[MAX];
-vector<int> distances(MAX, INF);
-priority_queue<edge> pq;
+int v, e, k, from, to, dist;
+vector<vector<pair<int, int>>> edges;
+vector<int> dists;
+vector<bool> visited;
+priority_queue<pair<int, int>, vector<pair<int, int>>, cmp> pq;
 
-void dijkstra(int k){
-	distances[k] = 0;
-	pq.push(edge(k, 0));
+int main() {
+    cin >> v >> e >> k;
+    edges.resize(v + 1, vector<pair<int, int>>());
+    for (int i = 0; i < e; ++i) {
+        cin >> from >> to >> dist;
+        edges[from].push_back({to, dist});
+    }
+        
+    dists.resize(v + 1, INF);
+    visited.resize(v + 1, false);
+    dists[k] = 0;
+    pq.push({k, 0});
+    while(!pq.empty()) {
+        int cur = pq.top().first;
+        pq.pop();
+        if (visited[cur] || dists[cur] == INF) continue;
+        visited[cur] = true;
+        
+        for (auto edge : edges[cur]) {
+            if (dists[cur] + edge.second < dists[edge.first]) {
+                dists[edge.first] = dists[cur] + edge.second;
+                pq.push({edge.first, dists[edge.first]});
+            }
+        }
+    }
 
-	while(!pq.empty()){
-		int v = pq.top().vertex;
-		int d = pq.top().distance;
-		pq.pop();
-
-		for(int i = 0; i < adj[v].size(); i++){
-			int nextV = adj[v][i].first;
-			int nextD = d + adj[v][i].second;
-			if(distances[nextV] > nextD){
-				distances[nextV] = nextD;
-				pq.push(edge(nextV, nextD));
-			}
-		}
-	}
-}
-
-
-
-int main(void){
-	cin >> V >> E >> K;
-	for(int i = 0, u, v, w; i < E; i++){
-		cin >> u >> v >> w;
-		adj[u].push_back({v, w});
-	}
-
-	dijkstra(K);
-    // for(int i=1;i<=V;i++)
-    //     cout<<(distances[i]==INF?"INF":to_string(distances[i]))<<'\n';
-
-	for(int i = 1; i <= V; i++)
-		if(distances[i] == INF)
-			cout << "INF" << '\n';
-		else
-			cout << to_string(distances[i]) << '\n';
+    for (int i = 1; i <= v; ++i) {
+        if (dists[i] == INF) cout << "INF" << '\n';
+        else cout << dists[i] << '\n';
+    }
 }
