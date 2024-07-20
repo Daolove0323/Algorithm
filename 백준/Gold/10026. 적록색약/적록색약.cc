@@ -1,88 +1,65 @@
 #include <iostream>
+#include <vector>
 #include <queue>
 using namespace std;
 
-enum STATE {RED, GREEN, BLUE};
-pair<int, int> dir[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+int dy[] = {-1, 1, 0, 0}, dx[] = {0, 0, -1, 1};
+int n, answer1, answer2;
+string s;
+vector<vector<char>> u, v;
+vector<vector<bool>> w;
 
-int normal[100][100], disabled[100][100];
-bool normal_checked[100][100], disabled_checked[100][100];
-int normal_count, disabled_count, N;
-
-void normal_bfs(int row, int col){
-	queue<pair<int, int>> q;
-	q.push({row, col});
-
-	while(!q.empty()){
-		pair<int, int> p = q.front();
-		int normal_state = normal[p.first][p.second];
-		normal_checked[p.first][p.second] = true;
-		q.pop();
-		
-		for(int i = 0; i < 4; i++){
-			int ny = p.first + dir[i].first;
-			int nx = p.second + dir[i].second;
-			if(N <= nx || nx < 0 || N <= ny || ny < 0 ||
-			normal_checked[ny][nx] == true || normal[ny][nx] != normal_state) continue;
-			q.push({ny, nx});
-			normal_checked[ny][nx] = true;
-		}
-	}
+bool mismatch(char origin, char target) {
+    if (origin == target) return false;
+    if (origin == 'B' || target == 'B') return true;
+    return false;
+}
+void bfs(int r, int c, char color, vector<vector<char>>& v) {
+    queue<pair<int, int>> q;
+    q.push({r, c});
+    w[r][c] = true;
+    
+    while (!q.empty()) {
+        int y = q.front().first;
+        int x = q.front().second;
+        q.pop();
+        
+        for (int i = 0; i < 4; ++i) {
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            if (!(0 <= ny && ny < n) || !(0 <= nx && nx < n) || w[ny][nx] || v[ny][nx] != color) continue;
+            q.push({ny, nx});
+            w[ny][nx] = true;
+        }
+    }
 }
 
-void disabled_bfs(int row, int col){
-	queue<pair<int, int>> q;
-	q.push({row, col});
-
-	while(!q.empty()){
-		pair<int, int> p = q.front();
-		int disabled_state = disabled[p.first][p.second];
-		disabled_checked[p.first][p.second] = true;
-		q.pop();
-		
-		for(int i = 0; i < 4; i++){
-			int ny = p.first + dir[i].first;
-			int nx = p.second + dir[i].second;
-			if(N <= nx || nx < 0 || N <= ny || ny < 0 ||
-			disabled_checked[ny][nx] == true || disabled[ny][nx] != disabled_state) continue;
-			q.push({ny, nx});
-			disabled_checked[ny][nx] = true;
-		}
-	}
-}
-
-int main(void){
-	cin >> N;
-	for(int i = 0; i < N; i++)
-		for(int j = 0; j < N; j++){
-			char c;
-			cin >> c;
-			if(c == 'R')
-				normal[i][j] = disabled[i][j] = RED;
-			else if(c == 'G'){
-				normal[i][j] = GREEN;
-				disabled[i][j] = RED;
-				}
-			else
-				normal[i][j] = disabled[i][j] = BLUE;
-		}
-
-		
-	for(int i = 0; i < N; i++){
-		for(int j = 0; j < N; j++){
-			if(normal_checked[i][j] == true) continue;
-			normal_bfs(i, j);
-			normal_count++;
-		}
-	}
-	
-	for(int i = 0; i < N; i++){
-		for(int j = 0; j < N; j++){
-			if(disabled_checked[i][j] == true) continue;
-			disabled_bfs(i, j);
-			disabled_count++;
-		}
-	}
-
-	cout << normal_count << " " << disabled_count;
+int main () {
+    cin >> n;
+    u.resize(n); v.resize(n);
+    w.resize(n, vector<bool>(n, false));
+    for (int i = 0; i < n; ++i) {
+        cin >> s;
+        for (auto c : s) {
+            u[i].push_back(c);
+            if (c == 'G') v[i].push_back('R');
+            else v[i].push_back(c);
+        }
+    }
+    
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (w[i][j]) continue;
+            bfs(i, j, u[i][j], u);  ++answer1;
+        }
+    }
+    w.clear();
+    w.resize(n, vector<bool>(n, false));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (w[i][j]) continue;
+            bfs(i, j, v[i][j], v);  ++answer2;
+        }
+    }
+    cout << answer1 << " " << answer2;
 }
