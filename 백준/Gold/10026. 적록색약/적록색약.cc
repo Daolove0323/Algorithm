@@ -9,11 +9,6 @@ string s;
 vector<vector<char>> u, v;
 vector<vector<bool>> w;
 
-bool mismatch(char origin, char target) {
-    if (origin == target) return false;
-    if (origin == 'B' || target == 'B') return true;
-    return false;
-}
 void bfs(int r, int c, char color, vector<vector<char>>& v) {
     queue<pair<int, int>> q;
     q.push({r, c});
