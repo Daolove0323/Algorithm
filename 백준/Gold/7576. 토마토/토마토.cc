@@ -1,53 +1,51 @@
 #include <iostream>
-#include <vector>
 #include <queue>
-#include <utility>
+#include <cstring>
 using namespace std;
 
-int d[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-int M, N, cnt;
-int map[1001][1001];
-int visited[1001][1001];
-vector<pair<int, int>> riped;
-vector<pair<int, int>> tmp;
+int dy[] = {-1, 1, 0, 0}, dx[] = {0, 0, -1, 1};
 
-void bfs(){
-	for(int i = 0; i < riped.size(); i++){
-		for(int j = 0; j < 4; j++){
-			int row = riped[i].first + d[j][0];
-			int col = riped[i].second + d[j][1];
-			if(0 <= row && row < N && 0 <= col && col < M && map[row][col] == 0){
-				tmp.push_back({row, col});
-				map[row][col] = 1;
-			}
-		}
-	}
-	riped.clear();
-	for(int i = 0; i < tmp.size(); i++)
-		riped.push_back(tmp[i]);
-	tmp.clear();
-	cnt++;
+int n, m;
+int matured[1000][1000];
+queue<pair<int, int>> q;
+
+int getMaxDay() {
+    int val = 0;
+    bool allMatured = true;
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
+            if (matured[i][j] == 0) return -1;
+            else if (matured[i][j] == -1) continue;
+            else val = max(val, matured[i][j]);
+    return val - 1;
 }
 
-int main(void){
-	cin >> M >> N;
-	for(int i = 0; i < N; i++){
-		for(int j = 0; j < M; j++){
-			cin >> map[i][j];
-			if(map[i][j] == 1)
-				riped.push_back({i, j});
-		}
-	}
+void bfs() {
+    while (!q.empty()) {
+        int y = q.front().first;
+        int x = q.front().second;
+        q.pop();
+        
+        for (int i = 0; i < 4; ++i) {
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            if (!(0 <= ny && ny < n) || !(0 <= nx && nx < m) || matured[ny][nx] != 0) continue;
+            q.push({ny, nx});
+            matured[ny][nx] = matured[y][x] + 1;
+        }
+    }
+}
 
-	while(!riped.empty())
-		bfs();
-
-	for(int i = 0; i < N; i++){
-		for(int j = 0; j < M; j++){
-			if(map[i][j] == 0)
-				cnt = 0;
-		}
-	}
-
-	cout << cnt - 1;
+int main() {
+    cin >> m >> n;
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
+            cin >> matured[i][j];
+    
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
+            if (matured[i][j] == 1) q.push({i, j});
+    bfs();
+    
+    cout << getMaxDay();
 }
