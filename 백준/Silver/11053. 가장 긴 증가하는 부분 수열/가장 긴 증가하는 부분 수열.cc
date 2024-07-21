@@ -1,23 +1,22 @@
 #include <iostream>
 using namespace std;
 
-int MAX = 1, N;
-int arr[1001];
-int dp[1001];
+int n, answer;
+int arr[1000];
+int dp[1000];
 
-int main(void){
-    cin >> N;
-    for(int i = 1; i <= N; i++) cin >> arr[i];
-
-    dp[1] = 1;
-    for(int i = 2; i <= N; i++){
-        int tmp = 0;
-        for(int j = i - 1; j >= 0; j--){
-            if(arr[j] < arr[i] && tmp < dp[j])
-                tmp = dp[j];
+int main() {
+    cin >> n;
+    for (int i = 0; i < n; ++i) cin >> arr[i];
+    dp[0] = 1;
+    for (int i = 1; i < n; ++i) {
+        int longest = 1;
+        for (int j = 0; j < i; ++j) {
+            if (arr[i] > arr[j]) longest = max(longest, dp[j] + 1);
         }
-        dp[i] = tmp + 1;
-        MAX = MAX < dp[i] ? dp[i] : MAX;
+        dp[i] = longest;
     }
-    cout << MAX;
+    for (int i = 0; i < n; ++i)
+        answer = max(answer, dp[i]);
+    cout << answer;
 }
