@@ -1,40 +1,28 @@
 #include <iostream>
 #include <vector>
-#include <stack>
 using namespace std;
 
-int N, cnt;
+int n, answer;
 
-int main(void) {
-    cin >> N;
-    stack<vector<int>> s;
-    for(int i = 0; i < N; i++) s.push({i});
-    
-    while(!s.empty()) {
-        vector<int> v = s.top();
-        s.pop();
-        
-        if(v.size() == N) {
-            cnt++;
-            continue;
-        }
+bool isValid(int r, int c, vector<int>& q) {
+    for (int i = 0; i < q.size(); ++i) {
+        if (c == q[i]) return false;
+        if (abs(r - i) == abs(c - q[i])) return false;
+    }
+    return true;
+}
 
-        for(int i = 0; i < N; i++) {
-            // 대각선, 직선
-            bool pass = true;
-            for(int j = 0; j < v.size(); j++)
-                if(v[j] - i == v.size() - j || v[j] - i == j - v.size() || v[j] == i) {
-                    pass = false;
-                    break;
-                }
-            if(pass == false) continue;
-            
-            // 8칸
-            if(-1 <= v.back() - i && v.back() - i <= 1) continue;
-            vector<int> v2 = v;
-            v2.push_back(i);
-            s.push(v2);
+void dfs(int r, vector<int> q_col) {
+    for (int c = 0; c < n; ++c) {
+        if (isValid(r, c, q_col)) {
+            if (r == n - 1) ++answer;
+            else {auto v(q_col); v.push_back(c); dfs(r + 1, v);}
         }
-    }      
-    cout << cnt;
+    }
+}
+int main() {
+    cin >> n;
+    vector<int> q_col;
+    dfs(0, q_col);
+    cout << answer;
 }
